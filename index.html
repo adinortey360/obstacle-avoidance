@@ -34,7 +34,7 @@
         const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
         const material = new THREE.MeshBasicMaterial({ color: 0x444444 });
 
-        const TOO_CLOSE = 2.0;
+        const TOO_CLOSE = 1.5;
 
         //subject
         const car = new THREE.Mesh(geometry, material);
@@ -77,11 +77,13 @@
             if(collision == false) {
             car.position.x = nextpath.x;
             car.position.y = nextpath.y;
+            console.log("We are on course");
             } else {
                 // coordinates for 30 degrees below obstacle
-                var avoidancepathx = obstacle1.position.x + 20;
-                var avoidancepathy = obstacle1.position.y - 15;
+                var avoidancepathx = obstacle1.position.x + 2;
+                var avoidancepathy = obstacle1.position.y - 2;
 
+                console.log("We are in collision");
 
                 var avoidancepath = generatePath(car.position.x, car.position.y, avoidancepathx, avoidancepathy)
 
@@ -102,6 +104,9 @@
             if (checkCollision(distance) == true) {
                 console.log("collision detected");
                 collision = true;
+            } else {
+
+                collision = false;
             }
 
         };
