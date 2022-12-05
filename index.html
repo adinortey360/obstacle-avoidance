@@ -69,7 +69,7 @@
         function move() {
             requestAnimationFrame(move);
 
-            var nextpath = generatePath(car.position.x, car.position.y, objective.position.x, objective.position.y)
+            var nextpath = generatePath(car.position.x, car.position.y, objective.position.x, objective.position.y);
 
             console.log(nextpath);
 
@@ -79,6 +79,8 @@
             car.position.y = nextpath.y;
             console.log("We are on course");
             } else {
+                //check if obstacle is higher or lower on both axis to determine avoidance coordinates
+
                 // coordinates for 30 degrees below obstacle
                 var avoidancepathx = obstacle1.position.x + 2;
                 var avoidancepathy = obstacle1.position.y - 2;
