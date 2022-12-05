@@ -34,8 +34,12 @@
         const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
         const material = new THREE.MeshBasicMaterial({ color: 0x444444 });
 
+        const TOO_CLOSE = 0.56;
+
         //subject
         const car = new THREE.Mesh(geometry, material);
+        //set position to bottom left
+        car.position.set(-3, -3, 0);
         scene.add(car);
 
 
@@ -46,31 +50,44 @@
         const material2 = new THREE.MeshBasicMaterial({ color: 0x0000ff });
         const obstacle1 = new THREE.Mesh(geometry2, material2);
         // sligtly position to the top left
-        obstacle1.position.set(0.5, 0.5, 0);
+        obstacle1.position.set(0.9, 0.5, 0);
         scene.add(obstacle1);
+
+
+        //add objective sphere in the top right corner
+        const geometry3 = new THREE.SphereGeometry(0.5, 32, 32);
+        const material3 = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const objective = new THREE.Mesh(geometry3, material3);
+        objective.position.set(3, 3, 0);
+        scene.add(objective);
 
 
         camera.position.z = 5;
 
+        var collision = false;
+
         function move() {
             requestAnimationFrame(move);
 
-            // move from left to right
-            car.position.x += 0.001;
-            car.position.y += 0.001;
+            var nextpath = generatePath(car.position.x, car.position.y, objective.position.x, objective.position.y)
 
+            console.log(nextpath);
+
+            car.position.x = nextpath.x;
+            car.position.y = nextpath.y;
 
             renderer.render(scene, camera);
 
-            console.log("current position of car", car.position);
 
-            console.log("current position of obstacle1", obstacle1.position);
-
-            //calculateDistance()
+            //calculate Distance
             var distance = calculateDistance(car.position.x, car.position.y, obstacle1.position.x, obstacle1.position.y);
 
             console.log("distance", distance);
 
+            if (checkCollision(distance) == true) {
+                console.log("collision detected");
+                collision = true;
+            }
 
         };
 
@@ -88,12 +105,37 @@
         }
 
 
-        function checkCoooollision(distance) {
-            if (distance < 0.5) {
+        function checkCollision(distance) {
+            if (distance < TOO_CLOSE) {
                 return true;
-            } 
+            }
             return false;
         }
+
+        // given two coordinates, generate array of points needed for point a to reach point b and return the next coordinate needed to get there
+        function generatePath(x1, y1, x2, y2) {
+            var x = x1;
+            var y = y1;
+
+            if (x < x2) {
+                x += 0.001;
+            } else if (x > x2) {
+                x -= 0.001;
+            }
+
+            if (y < y2) {
+                y += 0.001;
+            } else if (y > y2) {
+                y -= 0.001;
+            }
+
+
+            return { x: x, y: y };
+        }
+
+
+
+
     </script>
 
 </html>
