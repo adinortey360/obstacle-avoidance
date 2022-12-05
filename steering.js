@@ -5,10 +5,10 @@ class Steering {
         this.left = false;
         this.right = false;
 
-        this.#addKeyboardListeners();
+        this.addKeyboardListeners();
     }
 
-    #addKeyboardListeners() {
+    addKeyboardListeners() {
         document.onkeydown = (event) => {
             switch (event.key) {
                 case "ArrowLeft":
