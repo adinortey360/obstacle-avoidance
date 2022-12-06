@@ -8,3 +8,7 @@ body {
 #canvas {
     background: #333;
 }
+
+#netcanvas {
+    background: #fff;
+}

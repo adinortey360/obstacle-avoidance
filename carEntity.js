@@ -15,8 +15,13 @@ class Car {
 
         this.crashed = false;
 
-        if(type == "player") {
+        this.useAI = type == "ai";
+
+        if(type != "traffic") {
             this.sensor = new Sensor(this);
+            this.brain = new NeuralNetwork(
+                [this.sensor.raycount, 6,4]
+            );
         }
             
         this.steering = new Steering(type);
@@ -31,6 +36,18 @@ class Car {
 
         if(this.sensor) {
             this.sensor.update(bordersofroad, traffic);
+            const offsets = this.sensor.sensorreadings.map(
+                e => e == null ? 0 : 1 - e.offset
+            )
+            const output = NeuralNetwork.feedforward(offsets, this.brain);
+            console.log(output);
+
+            if(this.useAI) {
+                this.steering.drive = output[0];
+                this.steering.left = output[1];
+                this.steering.right = output[2];
+                this.steering.reverse = output[3];
+            }
         }
       
     }
@@ -135,7 +152,7 @@ class Car {
     }
 
 
-    draw(ctx) {
+    draw(ctx,showsensor=false) {
         if(this.crashed) {
             ctx.fillStyle = "red";
         } else {
@@ -151,7 +168,7 @@ class Car {
         ctx.fill();
 
 
-        if(this.sensor) {
+        if(this.sensor && showsensor) {
           this.sensor.draw(ctx);
         }
     }
