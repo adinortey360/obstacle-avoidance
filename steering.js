@@ -5,7 +5,16 @@ class Steering {
         this.left = false;
         this.right = false;
 
-        this.addKeyboardListeners();
+        switch(t) {
+            case "player":
+                this.addKeyboardListeners();
+                break;
+            case "traffic":
+                this.drive = true;
+                break;
+
+        }
+
     }
 
     addKeyboardListeners() {

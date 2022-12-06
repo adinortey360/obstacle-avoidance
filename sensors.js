@@ -9,20 +9,20 @@ class Sensor {
         this.sensorreadings = [];
     }
 
-    update(bordersofroad) {
+    update(bordersofroad, traffic) {
         this.castrays();
         this.sensorreadings = [];
 
         for (let i = 0; i < this.rays.length; i++) {
 
             this.sensorreadings.push(
-                this.getReadings(this.rays[i], bordersofroad)
+                this.getReadings(this.rays[i], bordersofroad, traffic)
             );
         }
 
     }
 
-    getReadings(ray, bordersofroad) {
+    getReadings(ray, bordersofroad, traffic) {
         let contacts=[];
 
         for(let i = 0; i < bordersofroad.length; i++) {
@@ -32,6 +32,19 @@ class Sensor {
                 contacts.push(intersection);
             }
         }
+
+        for(let i = 0; i < traffic.length; i++) {
+            const poly = traffic[i].polygon;
+
+            for(let j = 0; j < poly.length; j++) {
+                const value = getIntersection(ray[0], ray[1], poly[j], poly[(j + 1) % poly.length]);
+
+                if(value) {
+                    contacts.push(value);
+                }
+            }
+        }
+
 
         if(contacts.length == 0) {
             return null;

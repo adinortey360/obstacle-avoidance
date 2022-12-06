@@ -59,6 +59,13 @@ class Track{
             //     ctx.setLineDash([]);
             // }
 
+            //dots
+        
+
+
+            
+            
+
             ctx.beginPath();
             ctx.moveTo(x, this.top);
             ctx.lineTo(x, this.bottom);
