@@ -13,11 +13,13 @@ class Car {
 
         this.angle = 0;
 
+        this.sensor = new Sensor(this);
         this.steering = new Steering();
     }
 
-    update() {
+    update(bordersofroad) {
         this.movements();
+        this.sensor.update(bordersofroad);
     }
 
     movements() {
@@ -83,6 +85,8 @@ class Car {
         ctx.fill();
 
         ctx.restore();
+
+        this.sensor.draw(ctx);
     }
 
 
