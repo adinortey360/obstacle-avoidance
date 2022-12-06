@@ -5,7 +5,7 @@ const ctx = canvas.getContext("2d");
 
 const track = new Track(canvas.width / 2, canvas.width * 0.9);
 
-N = 450;
+N = 50;
 const cars = generateCars(N);
 
 var goodcar = cars[0];
@@ -28,8 +28,8 @@ const traffic = [
 ]
 
  //generate random traffic in for loop at varying speeds. there are only 3 lanes
-for(let i = 0; i < 40; i++) {
-    traffic.push(new Car(track.getCenterofLane(Math.floor(Math.random() * 3)), -Math.floor(Math.random() * 10000), 30, 50, "traffic", Math.floor(Math.random() * 3) + 1));
+for(let i = 0; i < 100; i++) {
+    traffic.push(new Car(track.getCenterofLane(Math.floor(Math.random() * 3)), -Math.floor(Math.random() * 10000), 35, 50, "traffic", Math.floor(Math.random() * 3) + 1 - 0.2));
 }
 
 
@@ -41,6 +41,9 @@ function save() {
     const json = JSON.stringify(goodcar.brain);
 
     localStorage.setItem("data", json);
+
+    //reload page
+    location.reload();
 }
 
 function discard() {
@@ -67,6 +70,7 @@ function generateCars(N) {
 }
 
 function animate() {
+  
     for (let i = 0; i < traffic.length; i++) {
         traffic[i].update(
             track.borders, []
@@ -84,6 +88,14 @@ function animate() {
             ...cars.map(c => c.y)
         )
     );
+
+
+    //count cars with crashed == false with array fiind
+    const alive = cars.filter(c => !c.crashed);
+    if(alive.length == 1) {
+        save();
+    }
+
 
     canvas.height = window.innerHeight;
 
