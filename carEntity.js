@@ -157,7 +157,15 @@ class Car {
             ctx.fillStyle = "red";
         } else {
             ctx.fillStyle = "black";
+
+            if(this.useAI) {
+                ctx.fillStyle = "blue";
+            }
+    
         }
+
+        //if ai set to blue
+       
         ctx.beginPath();
         ctx.moveTo(this.polygon[0].x, this.polygon[0].y);
 

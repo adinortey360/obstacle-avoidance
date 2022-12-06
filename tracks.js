@@ -46,6 +46,8 @@ class Track{
         ctx.linewidth = 5;
         ctx.strokeStyle = "white";
 
+
+
         for(let i = 1; i <= this.lanes - 1; i++ ) {
             const x = lerp(
                 this.left,
@@ -53,23 +55,21 @@ class Track{
                 i / this.lanes
             );
 
-            // if(i > 0 && i < this.lanes) {   
-            //     ctx.setLineDash([10,10]);
-            // } else {
-            //     ctx.setLineDash([]);
-            // }
-
-            //dots
-        
-
+            if(i > 0 && i < this.lanes) {   
+                // ctx.setLineDash([10,10]);
+            } else {
+                ctx.setLineDash([]);
+            }
 
             
             
 
             ctx.beginPath();
+            
             ctx.moveTo(x, this.top);
             ctx.lineTo(x, this.bottom);
             ctx.stroke();
+
             
         }
 

@@ -2,7 +2,7 @@ class Sensor {
     constructor(car) {
         this.car = car;
         this.raycount = 20;
-        this.lengthofray = 150;
+        this.lengthofray = 300;
         this.rayspread = Math.PI / 2;
 
         this.rays = [];
@@ -90,6 +90,10 @@ class Sensor {
             ctx.beginPath();
             ctx.lineWidth = 2;
             ctx.strokeStyle = "white";
+            // turn opacity on and off every 1 second
+            ctx.globalAlpha = Math.floor(Date.now() / 1000) % 2 ? 0.5 : 0.8;
+
+
             ctx.moveTo(this.rays[i][0].x, this.rays[i][0].y);
             ctx.lineTo(end.x, end.y);
             ctx.stroke();

@@ -1,3 +1,4 @@
+<!-- HTML Code with canvas -->
 <!DOCTYPE html>
 <html>
 
@@ -5,159 +6,21 @@
     <title>Obstacle Avoidance</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+    <canvas id="canvas"></canvas>
+    
+    <button onclick="save()">Save</button>
+    <button onclick="discard()">Discard</button>
 
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@0.147.0/build/three.module.js"
-        }
-      }
-    </script>
-
-    <script type="module">
-
-        import * as THREE from 'three';
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0xffffff, 0);
-        document.body.appendChild(renderer.domElement);
-
-
-        const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-        const material = new THREE.MeshBasicMaterial({ color: 0x444444 });
-
-        const TOO_CLOSE = 1.5;
-
-        //subject
-        const car = new THREE.Mesh(geometry, material);
-        //set position to bottom left
-        car.position.set(-3, -3, 0);
-        scene.add(car);
-
-
-        //add obstacle
-
-        // blue geometry
-        const geometry2 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-        const material2 = new THREE.MeshBasicMaterial({ color: 0x0000ff });
-        const obstacle1 = new THREE.Mesh(geometry2, material2);
-        // sligtly position to the top left
-        obstacle1.position.set(0.9, 0.5, 0);
-        scene.add(obstacle1);
-
-
-        //add objective sphere in the top right corner
-        const geometry3 = new THREE.SphereGeometry(0.5, 32, 32);
-        const material3 = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        const objective = new THREE.Mesh(geometry3, material3);
-        objective.position.set(5, 1, 0);
-        scene.add(objective);
-
-
-        camera.position.z = 5;
-
-        var collision = false;
-
-        function move() {
-            requestAnimationFrame(move);
-
-            var nextpath = generatePath(car.position.x, car.position.y, objective.position.x, objective.position.y);
-
-            console.log(nextpath);
-
-
-            if(collision == false) {
-            car.position.x = nextpath.x;
-            car.position.y = nextpath.y;
-            console.log("We are on course");
-            } else {
-                //check if obstacle is higher or lower on both axis to determine avoidance coordinates
-
-                // coordinates for 30 degrees below obstacle
-                var avoidancepathx = obstacle1.position.x + 2;
-                var avoidancepathy = obstacle1.position.y - 2;
-
-                console.log("We are in collision");
-
-                var avoidancepath = generatePath(car.position.x, car.position.y, avoidancepathx, avoidancepathy)
-
-                 car.position.x = avoidancepath.x;
-                 car.position.y = avoidancepath.y;
-                //log
-                console.log(avoidancepath);
-            }
-
-            renderer.render(scene, camera);
-
-
-            //calculate Distance
-            var distance = calculateDistance(car.position.x, car.position.y, obstacle1.position.x, obstacle1.position.y);
-
-            console.log("distance", distance);
-
-            if (checkCollision(distance) == true) {
-                console.log("collision detected");
-                collision = true;
-            } else {
-
-                collision = false;
-            }
-
-        };
-
-        move();
-
-
-
-        function calculateDistance(x1, y1, x2, y2) {
-            var a = x1 - x2;
-            var b = y1 - y2;
-
-            var c = Math.sqrt(a * a + b * b);
-
-            return c;
-        }
-
-
-        function checkCollision(distance) {
-            if (distance < TOO_CLOSE) {
-                return true;
-            }
-            return false;
-        }
-
-        // given two coordinates, generate array of points needed for point a to reach point b and return the next coordinate needed to get there
-        function generatePath(x1, y1, x2, y2) {
-            var x = x1;
-            var y = y1;
-
-            if (x < x2) {
-                x += 0.001;
-            } else if (x > x2) {
-                x -= 0.001;
-            }
-
-            if (y < y2) {
-                y += 0.001;
-            } else if (y > y2) {
-                y -= 0.001;
-            }
-
-
-            return { x: x, y: y };
-        }
-
-
-
-
-    </script>
-
+    <script src="brain.js"></script>
+    <script src="sensors.js"></script>
+    <script src="helpers.js"></script>
+    <script src="tracks.js"></script> 
+    <script src="steering.js"></script> 
+    <script src="carEntity.js"></script> 
+    <script src="script.js"></script>
+    
+</body>
 </html>
