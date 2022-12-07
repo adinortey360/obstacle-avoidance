@@ -26,6 +26,10 @@ class Car {
             );
         }
 
+        if(type == "traffic") {
+            this.acceleration = 0.1;
+        }
+
         this.steering = new Steering(type);
     }
 
