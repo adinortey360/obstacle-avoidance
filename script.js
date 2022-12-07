@@ -5,7 +5,7 @@ const ctx = canvas.getContext("2d");
 
 const track = new Track(canvas.width / 2, canvas.width * 0.9);
 
-N = 100;
+N = 1;
 const cars = generateCars(N);
 
 var goodcar = cars[0];
@@ -18,7 +18,7 @@ if(localStorage.getItem("data")) {
         cars[i].brain = JSON.parse(localStorage.getItem("data"));
 
         if(i != 0) {
-            NeuralNetwork.mutate(cars[i].brain, 0.1);
+            NeuralNetwork.mutate(cars[i].brain, 0);
         }
     }
 }
@@ -28,7 +28,7 @@ const traffic = [
 ]
 
  //generate 100 random traffic in for loop at varying speeds. there are only 3 lanes
-for(let i = 0; i < 200; i++) {
+for(let i = 0; i < 100; i++) {
     traffic.push(new Car(track.getCenterofLane(Math.floor(Math.random() * 3)), -Math.floor(Math.random() * 10000), 30, 50, "traffic", Math.floor(Math.random() * 3) + 1));
 }
 
