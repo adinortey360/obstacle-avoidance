@@ -18,7 +18,7 @@ if(localStorage.getItem("data")) {
         cars[i].brain = JSON.parse(localStorage.getItem("data"));
 
         if(i != 0) {
-            NeuralNetwork.mutate(cars[i].brain, 0.0001);
+            NeuralNetwork.mutate(cars[i].brain, 0.001);
         }
     }
 }
