@@ -5,7 +5,7 @@ const ctx = canvas.getContext("2d");
 
 const track = new Track(canvas.width / 2, canvas.width * 0.9);
 
-N = 1;
+N = 10;
 const cars = generateCars(N);
 
 var goodcar = cars[0];
